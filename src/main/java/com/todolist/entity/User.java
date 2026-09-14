@@ -12,15 +12,16 @@ public class User {
     private final String email;
     private ReminderChannel preferredChannel;
      private static final Pattern EMAIL_PATTERN =
-            Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
+             Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
     
+        //Reading existing User
        public User(Long id, String name, String email, ReminderChannel preferredChannel) {
            this.id = id;
            this.name = Objects.requireNonNull(name, "name must not be null");
            this.email = validateEmail(email);
            this.preferredChannel = preferredChannel == null ? ReminderChannel.EMAIL : preferredChannel;
        }
-    
+       //Creating new User
        public User(String name, String email, ReminderChannel preferredChannel) {
            this(null, name, email, preferredChannel);
        }
@@ -34,7 +35,7 @@ public class User {
        }
     
     
-        public Long getId() {
+    public Long getId() {
         return id;
     }
 

@@ -11,7 +11,6 @@ public enum Priority {
         this.urgencyRank = urgencyRank;
     }
 
-    /** Lower rank = more urgent. Used as a tiebreaker by the hand-rolled sort. */
     public int urgencyRank() {
         return urgencyRank;
     }
