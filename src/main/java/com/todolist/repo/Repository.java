@@ -2,14 +2,14 @@ package com.todolist.repo;
 
 import java.util.List;
 import java.util.Optional;
-public interface Repository<T, ID> {
+public interface Repository<T, DT> {
     T save(T entity);
 
-    Optional<T> findById(ID id);
+    Optional<T> findById(DT id);
 
     List<T> findAll();
 
-    void deleteById(ID id);
+    void deleteById(DT id);
 
-    boolean existsById(ID id);
+    boolean existsById(DT id);
 }

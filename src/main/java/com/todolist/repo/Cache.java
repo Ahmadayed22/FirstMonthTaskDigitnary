@@ -6,7 +6,7 @@ import java.util.Optional;
 public class Cache<K, V> {
 
     private final int maxSize;
-    private final Map<K, V> store;
+    private final Map<K, V> store;//1 → Task(id=1, title="Study Java")
 
     public Cache(int maxSize) {
         this.maxSize = maxSize;
@@ -26,7 +26,7 @@ public class Cache<K, V> {
         return Optional.ofNullable(store.get(key));
     }
 
-    public void evict(K key) {
+    public void delete(K key) {
         store.remove(key);
     }
 
