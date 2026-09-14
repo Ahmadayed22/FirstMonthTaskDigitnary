@@ -18,7 +18,7 @@ public class StatsService {
         this.taskRepository = taskRepository;
     }
 
-    /** 1) Tasks completed per user, restricted to the last 7 days. */
+    // Tasks completed per user, restricted to the last 7 days. */
     public Map<Long, Long> completedPerUserThisWeek() {
         LocalDateTime weekAgo = LocalDateTime.now().minusDays(7);
         return taskRepository.findAll().stream()
@@ -27,14 +27,14 @@ public class StatsService {
                 .collect(Collectors.groupingBy(Task::getOwnerId, Collectors.counting()));
     }
 
-    /** 2) Count of currently-overdue tasks, grouped by priority. */
+    // Count of currently-overdue tasks, grouped by priority. */
     public Map<Priority, Long> overdueCountByPriority() {
         return taskRepository.findAll().stream()
                 .filter(t -> t.getStatus() == TaskStatus.OVERDUE)
                 .collect(Collectors.groupingBy(Task::getPriority, Collectors.counting()));
     }
 
-    /** 3) Average time-to-completion, in hours, across all completed tasks. */
+    // Average time-to-completion, in hours, across all completed tasks. */
     public double averageTimeToCompletionHours() {
         return taskRepository.findAll().stream()
                 .filter(t -> t.getStatus() == TaskStatus.DONE && t.getCompletedAt() != null)
@@ -43,7 +43,7 @@ public class StatsService {
                 .orElse(0.0) / 60.0;
     }
 
-    /** 4)  total task count per priority, across all statuses. */
+    // total task count per priority, across all statuses. */
     public Map<Priority, Long> countByPriority() {
         return taskRepository.findAll().stream()
                 .collect(Collectors.groupingBy(Task::getPriority, Collectors.counting()));

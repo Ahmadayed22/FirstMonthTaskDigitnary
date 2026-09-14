@@ -18,7 +18,7 @@ public class ReportService {
         this.taskRepository = taskRepository;
     }
 
-    /** Tasks not yet done, due on or before windowEnd, ordered by dueDate then priority. */
+    //Get all unfinished tasks that are due before a specific deadline, then sort them by due date and priority.
     public List<Task> dueSoonReport(LocalDateTime windowEnd) {
         List<Task> candidates = taskRepository.findAll().stream()
                 .filter(t -> t.getStatus() != TaskStatus.DONE)
