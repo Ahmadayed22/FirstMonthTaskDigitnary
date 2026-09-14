@@ -17,6 +17,7 @@ import com.todolist.repo.ReminderRepository;
 import com.todolist.repo.TaskRepository;
 import com.todolist.repo.UserRepository;
 
+//main job is to create, reschedule, find, and send reminders.
 public class ReminderService {
 
     private static final Duration DEFAULT_LEAD_TIME = Duration.ofHours(24);
@@ -36,7 +37,7 @@ public class ReminderService {
         this.reminderFactory = reminderFactory;
     }
 
-    /** Schedules a reminder 24h before due, on the owner's preferred channel. */
+    // Schedules a reminder 24h before due, on the owner's preferred channel
     public Reminder scheduleDefaultReminder(Task task) {
         LocalDateTime triggerTime = task.getDueDate().minus(DEFAULT_LEAD_TIME);
         ReminderChannel channel = userRepository.findById(task.getOwnerId())
@@ -46,7 +47,7 @@ public class ReminderService {
         return reminderRepository.save(reminder);
     }
 
-    /** Judgment-call support: shift every reminder tied to a task by the same duration its due date moved. */
+    //  shift every reminder tied to a task by the same duration its due date moved 
     public void shiftRemindersForTask(Long taskId, Duration shift) {
         for (Reminder reminder : reminderRepository.findByTaskId(taskId)) {
             reminder.reschedule(reminder.getTriggerTime().plus(shift));
@@ -58,7 +59,7 @@ public class ReminderService {
         return reminderRepository.findDueForDispatch();
     }
 
-    /** Sequential baseline dispatch. */
+    //It gets all due reminders and sends them one by one
     public void dispatchDue() {
         for (Reminder reminder : findDueForDispatch()) {
             dispatchOne(reminder);
@@ -66,22 +67,22 @@ public class ReminderService {
     }
 
 
-    public void dispatchDueConcurrently(int threadPoolSize) {
-        List<Reminder> due = findDueForDispatch();
-        ExecutorService executor = Executors.newFixedThreadPool(threadPoolSize);
-        try {
-            for (Reminder reminder : due) {
-                executor.submit(() -> dispatchOne(reminder));
-            }
-        } finally {
-            executor.shutdown();
-            try {
-                executor.awaitTermination(30, TimeUnit.SECONDS);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-        }
-    }
+    // public void dispatchDueConcurrently(int threadPoolSize) {
+    //     List<Reminder> due = findDueForDispatch();
+    //     ExecutorService executor = Executors.newFixedThreadPool(threadPoolSize);
+    //     try {
+    //         for (Reminder reminder : due) {
+    //             executor.submit(() -> dispatchOne(reminder));
+    //         }
+    //     } finally {
+    //         executor.shutdown();
+    //         try {
+    //             executor.awaitTermination(30, TimeUnit.SECONDS);
+    //         } catch (InterruptedException e) {
+    //             Thread.currentThread().interrupt();
+    //         }
+    //     }
+    // }
 
     private void dispatchOne(Reminder reminder) {
         Task task = taskRepository.findById(reminder.getTaskId())

@@ -65,6 +65,7 @@ public class TaskService {
     public Task reschedule(Long taskId, LocalDateTime newDueDate) {
         Task task = requireById(taskId);
         LocalDateTime oldDueDate = task.getDueDate();
+        //Calculate the shift
         Duration shift = Duration.between(oldDueDate, newDueDate);
 
         task.reschedule(newDueDate);
@@ -76,7 +77,7 @@ public class TaskService {
         return task;
     }
 
-    // Scans for tasks past due and not yet DONE, marks them OVERDUE, and publishes events.
+    // Find tasks whose due date has passed and mark them OVERDUE
 
     public void sweepOverdueTasks() {
         LocalDateTime now = LocalDateTime.now();

@@ -83,8 +83,7 @@ public class App
         System.out.println("Total tasks by priority: " + statsService.countByPriority());
 
         System.out.println();
-        System.out.println("=== Reminder dispatch (bonus: concurrent via ExecutorService) ===");
-        reminderService.dispatchDueConcurrently(4);
+   
 
         System.out.println();
         System.out.println("Events observed -- created: " + statsListener.getCreatedCount()
