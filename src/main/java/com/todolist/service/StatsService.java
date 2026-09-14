@@ -43,7 +43,7 @@ public class StatsService {
                 .orElse(0.0) / 60.0;
     }
 
-    /** 4) Bonus aggregation: total task count per priority, across all statuses. */
+    /** 4)  total task count per priority, across all statuses. */
     public Map<Priority, Long> countByPriority() {
         return taskRepository.findAll().stream()
                 .collect(Collectors.groupingBy(Task::getPriority, Collectors.counting()));
